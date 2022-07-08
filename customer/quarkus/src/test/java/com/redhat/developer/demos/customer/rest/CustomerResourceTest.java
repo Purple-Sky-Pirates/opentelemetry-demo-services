@@ -13,7 +13,7 @@ public class CustomerResourceTest {
     @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/")
+          .when().get("/customer")
           .then()
              .statusCode(503)
              .body(startsWith("customer =>"));

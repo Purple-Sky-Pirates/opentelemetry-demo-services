@@ -1,6 +1,42 @@
 version: "2"
 services:
 
+# opentelemetry-jvm
+  # opentelemetry-jvm:
+  #   image: quarkus/opentelemetry-jvm:latest
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - otel-collector
+
+# curl
+  curl:
+    image: quay.io/swinches/ossm-curl:1.0
+
+# Customer
+  customer:
+    image: quarkus-customer-jvm:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - preference
+
+# Preference
+  preference:
+    image: quarkus-preference-jvm:latest
+    ports:
+      - "8081:8080"
+      - "8080"
+    depends_on:
+      - recommendation
+
+# Recommendation
+  recommendation:
+    image: quarkus-recommendation-jvm:latest
+    ports:
+      - "8082:8080"
+      - "8080"
+
   # Jaeger
   jaeger-all-in-one:
     image: jaegertracing/all-in-one:latest
@@ -10,7 +46,7 @@ services:
       - "14250"
   # Collector
   otel-collector:
-    image: otel/opentelemetry-collector:latest
+    image: otel/opentelemetry-collector:0.55.0
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml

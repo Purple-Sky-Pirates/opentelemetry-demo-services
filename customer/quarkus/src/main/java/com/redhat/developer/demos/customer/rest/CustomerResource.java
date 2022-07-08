@@ -9,7 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/")
+@Path("/customer")
 public class CustomerResource {
 
     private static final String RESPONSE_STRING_FORMAT = "customer => %s\n";

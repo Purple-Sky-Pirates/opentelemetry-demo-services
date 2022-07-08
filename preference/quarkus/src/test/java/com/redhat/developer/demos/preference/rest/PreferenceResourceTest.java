@@ -12,7 +12,7 @@ public class PreferenceResourceTest {
     @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/")
+          .when().get("/preference")
           .then()
              .statusCode(503)
              .body(startsWith("preference =>"));

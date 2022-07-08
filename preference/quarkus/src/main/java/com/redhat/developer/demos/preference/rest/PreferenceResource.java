@@ -9,7 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/")
+@Path("/preference")
 public class PreferenceResource {
 
     private static final String RESPONSE_STRING_FORMAT = "preference => %s\n";

@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 @RegisterRestClient
 public interface PreferenceService {
 
-    @Path("/")
+    @Path("/preference")
     @GET
     @Produces("text/plain")
     public String getPreference();

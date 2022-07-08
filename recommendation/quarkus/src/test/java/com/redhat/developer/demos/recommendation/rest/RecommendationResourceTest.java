@@ -12,7 +12,7 @@ public class RecommendationResourceTest {
     @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/")
+          .when().get("/recommendation")
           .then()
              .statusCode(200)
              .body(startsWith("recommendation"));

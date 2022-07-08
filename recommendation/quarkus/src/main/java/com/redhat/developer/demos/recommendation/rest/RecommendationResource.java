@@ -1,16 +1,14 @@
 package com.redhat.developer.demos.recommendation.rest;
 
 import java.io.ByteArrayInputStream;
-import javax.json.Json;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 
-@Path("/")
+@Path("/recommendation")
 public class RecommendationResource {
 
     private static final String RESPONSE_STRING_FORMAT = "recommendation v1 from '%s': %d\n";
@@ -81,11 +79,11 @@ public class RecommendationResource {
         return Response.ok("Following requests to / will return 200\n").build();
     }
 
-    private String getNow() {
-        final Client client = ClientBuilder.newClient();
-        final Response res = client.target("http://worldclockapi.com/api/json/cet/now").request().get();
-        final String jsonObject = res.readEntity(String.class);
-        return Json.createReader(new ByteArrayInputStream(jsonObject.getBytes())).readObject().getString("currentDateTime");
-    }
+    // private String getNow() {
+    //     final Client client = ClientBuilder.newClient();
+    //     final Response res = client.target("http://worldclockapi.com/api/json/cet/now").request().get();
+    //     final String jsonObject = res.readEntity(String.class);
+    //     return Json.createReader(new ByteArrayInputStream(jsonObject.getBytes())).readObject().getString("currentDateTime");
+    // }
 
 }

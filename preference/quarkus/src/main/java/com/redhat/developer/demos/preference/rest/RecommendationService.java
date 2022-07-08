@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 @RegisterRestClient
 public interface RecommendationService {
 
-    @Path("/")
+    @Path("/recommendation")
     @GET
     @Produces("text/plain")
     public String getRecommendation();

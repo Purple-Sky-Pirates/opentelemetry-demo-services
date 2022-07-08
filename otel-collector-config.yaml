@@ -11,7 +11,8 @@ receivers:
 exporters:
   jaeger:
     endpoint: jaeger-all-in-one:14250
-    insecure: true
+    tls:
+      insecure: true
 
 processors:
   batch:
@@ -21,6 +22,9 @@ extensions:
 
 service:
   extensions: [health_check]
+  telemetry:
+    logs:
+      level: "debug"
   pipelines:
     traces:
       receivers: [otlp,otlp/2]
