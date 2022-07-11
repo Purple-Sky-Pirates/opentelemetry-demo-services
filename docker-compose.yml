@@ -15,7 +15,7 @@ services:
 
 # Customer
   customer:
-    image: quarkus-customer-jvm:latest
+    image: quay.io/swinches/quarkus-customer-jvm:latest
     ports:
       - "8080:8080"
     depends_on:
@@ -23,7 +23,7 @@ services:
 
 # Preference
   preference:
-    image: quarkus-preference-jvm:latest
+    image: quay.io/swinches/quarkus-preference-jvm:latest
     ports:
       - "8081:8080"
       - "8080"
@@ -32,7 +32,7 @@ services:
 
 # Recommendation
   recommendation:
-    image: quarkus-recommendation-jvm:latest
+    image: quay.io/swinches/quarkus-recommendation-jvm:latest
     ports:
       - "8082:8080"
       - "8080"
