@@ -1,6 +1,9 @@
-version: "2"
-services:
+version: "3"
 
+networks:
+  loki:
+
+services:
 # opentelemetry-jvm
   # opentelemetry-jvm:
   #   image: quarkus/opentelemetry-jvm:latest
@@ -12,6 +15,8 @@ services:
 # curl
   curl:
     image: quay.io/swinches/ossm-curl:1.0
+    networks:
+      - loki
 
 # Customer
   customer:
@@ -20,6 +25,8 @@ services:
       - "8080:8080"
     depends_on:
       - preference
+    networks:
+      - loki
 
 # Preference
   preference:
@@ -29,6 +36,8 @@ services:
       - "8080"
     depends_on:
       - recommendation
+    networks:
+      - loki
 
 # Recommendation
   recommendation:
@@ -36,6 +45,9 @@ services:
     ports:
       - "8082:8080"
       - "8080"
+    networks:
+      - loki
+
 
   # Jaeger
   jaeger-all-in-one:
@@ -44,9 +56,12 @@ services:
       - "16686:16686"
       - "14268"
       - "14250"
+    networks:
+      - loki
+
   # Collector
   otel-collector:
-    image: otel/opentelemetry-collector:0.55.0
+    image: otel/opentelemetry-collector-contrib:0.55.0
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
@@ -56,3 +71,41 @@ services:
       - "55680:55680" # OTLP gRPC receiver alternative port
     depends_on:
       - jaeger-all-in-one
+    networks:
+      - loki
+
+# Loki
+  loki:
+    image: grafana/loki:2.6.0
+    command: ["-config.file=/etc/loki/loki-local-config.yaml"]
+    volumes:
+      - /var/log:/var/log
+      - ./loki-local-config.yaml:/etc/loki/loki-local-config.yaml
+    ports:
+      - "3100:3100"
+      - "9095:9095"
+      - "7946:7946"
+    networks:
+      - loki
+
+# Log-CLI
+  # logcli:
+  #   image: docker.io/grafana/logcli:2.6.0-amd64
+  #   command: ["sleep 60000"]
+  #   networks:
+  #     - loki
+
+  # promtail:
+  #   image: grafana/promtail:2.5.0
+  #   volumes:
+  #     - /var/log:/var/log
+  #   command: -config.file=/etc/promtail/config.yml
+  #   networks:
+  #     - loki
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - loki

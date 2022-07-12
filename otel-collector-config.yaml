@@ -13,9 +13,30 @@ exporters:
     endpoint: jaeger-all-in-one:14250
     tls:
       insecure: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    tenant_id: "example"
+    format: json
+    labels:
+      record:
+        traceID: traceid
+      attributes:
+        container.name: "container_name"
+        k8s.cluster.name: "k8s_cluster_name"
+        severity: "severity"
+        http.status_code: "http_status_code" 
+      resource:
+        resource.name: "resource_name"
+        severity: "severity"
+    headers:
+      "X-Custom-Header": "loki_rocks"
 
 processors:
-  batch:
+  batch: {}
+  memory_limiter:
+    check_interval: 5s
+    limit_mib: 409
+    spike_limit_mib: 128
 
 extensions:
   health_check:
@@ -26,7 +47,18 @@ service:
     logs:
       level: "debug"
   pipelines:
+    logs:
+      exporters:
+      - loki
+      processors:
+      - memory_limiter
+      - batch
+      receivers: 
+      - otlp
     traces:
-      receivers: [otlp,otlp/2]
-      processors: [batch]
       exporters: [jaeger]
+      receivers: [otlp,otlp/2]
+      processors: 
+      - memory_limiter
+      - batch
+      
